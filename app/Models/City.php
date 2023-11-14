@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Province;
+use App\Models\Subdistrict;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,5 +22,10 @@ class City extends Model
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class);
+    }
+
+    public function subdistricts(): HasMany
+    {
+        return $this->hasMany(Subdistrict::class);
     }
 }

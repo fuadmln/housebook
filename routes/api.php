@@ -30,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/city', V1\CityController::class)->only([
         'index', 'show', 'store'
     ]);
+
+    Route::apiResource('/subdistrict', V1\SubdistrictController::class)->only([
+        'index', 'show', 'store'
+    ]);
 });
 
 // PUBLIC USER
