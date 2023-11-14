@@ -22,6 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // LOGGED USER
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('auth/logout', [V1\AuthController::class, 'logout']);
+    
+    Route::apiResource('/provinces', V1\ProvinceController::class)->only([
+        'index', 'show', 'store'
+    ]);
 });
 
 // PUBLIC USER
