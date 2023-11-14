@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
@@ -17,15 +18,20 @@ class AuthenticationTest extends TestCase
         'password_confirmation' => 'password',
     ];
 
+    private function createUser()
+    {
+        return User::factory()->create();
+    }
+
     public function testUserCanRegisterWithCorrectCredentials()
     {
         $response = $this->postJson('/api/v1/auth/register', $this->validRegisterBody);
 
         $response->assertStatus(201)
-        ->assertJsonStructure([
-            'access_token',
-            'token_type',
-        ]);
+            ->assertJsonStructure([
+                'access_token',
+                'token_type',
+            ]);
 
         $this->assertDatabaseHas('users', [
             'name'  => 'John Doe',
@@ -78,5 +84,45 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertDatabaseCount('users', 1);
+    }
+
+    public function testUserCanLoginWithCorrectCredentials()
+    {
+        $user = $this->createUser();
+
+        $response = $this->postJson('/api/v1/auth/login', [
+            'email'    => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(201)
+            ->assertJsonStructure([
+                'access_token',
+                'token_type',
+            ]);
+    }
+
+    public function testUserCannotLoginWithIncorrectCredentials()
+    {
+        $user = $this->createUser();
+
+        $response = $this->postJson('/api/v1/auth/login', [
+            'email'    => $user->email,
+            'password' => 'wrong_password',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function testUserCannotLoginWithEmptyPassword()
+    {
+        $user = $this->createUser();
+
+        $response = $this->postJson('/api/v1/auth/login', [
+            'email'    => $user->email,
+            'password' => '',
+        ]);
+
+        $response->assertStatus(422);
     }
 }
