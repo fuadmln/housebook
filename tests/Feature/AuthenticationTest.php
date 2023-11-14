@@ -125,4 +125,47 @@ class AuthenticationTest extends TestCase
 
         $response->assertStatus(422);
     }
+
+    // TODO: logout test
+    public function testLoggedUserCanLogout()
+    {
+        $user = $this->createUser();
+        $loginResponse = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $loginResponse['access_token'],
+        ])->postJson('/api/v1/auth/logout');
+
+        $response->assertStatus(204);
+    }
+
+    // TODO: FIX FAILED TEST
+    public function testLoggedOutUserCannotLogoutAgain()
+    {
+        $user = $this->createUser();
+        $loginResponse = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $logout1Response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $loginResponse['access_token'],
+        ])->postJson('/api/v1/auth/logout');
+
+        $logout2Response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $loginResponse['access_token'],
+        ])->postJson('/api/v1/auth/logout');
+
+        $logout2Response->assertStatus(401);
+    }
+
+    public function testUnauthenticatedUserCannotLogout()
+    {
+        $response = $this->postJson('/api/v1/auth/logout');
+
+        $response->assertStatus(401);
+    }
 }
