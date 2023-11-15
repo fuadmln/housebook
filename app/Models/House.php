@@ -79,4 +79,9 @@ class House extends Model
     {
         return $this->hasMany(HouseSpesification::class);
     }
+
+    public function residenceSpesifications(): HasMany
+    {
+        return $this->hasMany(ResidenceSpesification::class);
+    }
 }

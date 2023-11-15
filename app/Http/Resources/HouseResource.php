@@ -42,6 +42,7 @@ class HouseResource extends JsonResource
                 'name' => $this->subdistrict->name,
             ],
             'house_spesification' => $this->houseSpesifications,
+            'residence_spesification' => $this->residenceSpesifications,
         ];
     }
 }

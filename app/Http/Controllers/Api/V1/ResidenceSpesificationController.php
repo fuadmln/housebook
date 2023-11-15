@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-use App\Models\HouseSpesification;
 use App\Http\Controllers\Controller;
+use App\Models\ResidenceSpesification;
+use Illuminate\Http\Request;
 
-class HouseSpesificationController extends Controller
+class ResidenceSpesificationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return HouseSpesification::all();
+        return ResidenceSpesification::all();
     }
 
     /**
@@ -27,23 +27,23 @@ class HouseSpesificationController extends Controller
             'value' => 'required|string|max:100',
         ]);
 
-        $houseSpec = HouseSpesification::create($validated);
+        $residenceSpec = ResidenceSpesification::create($validated);
 
-        return $houseSpec;
+        return $residenceSpec;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, HouseSpesification $houseSpec)
+    public function show(ResidenceSpesification $residenceSpec)
     {
-        return $houseSpec;
+        return $residenceSpec;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, ResidenceSpesification $residenceSpec)
     {
         //
     }
@@ -51,9 +51,9 @@ class HouseSpesificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HouseSpesification $houseSpec)
+    public function destroy(ResidenceSpesification $residenceSpec)
     {
-        $houseSpec->delete(); //try catch
+        $residenceSpec->delete(); //try catch
 
         return response()->noContent();
     }
