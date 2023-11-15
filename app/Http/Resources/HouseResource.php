@@ -41,6 +41,7 @@ class HouseResource extends JsonResource
                 'id' => $this->subdistrict->id,
                 'name' => $this->subdistrict->name,
             ],
+            'house_spesification' => $this->houseSpesifications,
         ];
     }
 }

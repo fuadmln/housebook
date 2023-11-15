@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\House;
+use App\Models\HouseSpesification;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
 use App\Http\Requests\StoreHouseRequest;
@@ -30,6 +31,24 @@ class HouseController extends Controller
         $house = new House($request->validated());
         $house->user_id = $request->user()->id;
         $house->save(); //try cactch
+        
+        return $house;//
+
+        /* storing children
+        // check if request has model data
+        $house->houseSpesifications()->save(new HouseSpesification([
+            'name' => 'tipe',
+            'value' => '36',
+        ])); //single
+        $house->houseSpesifications->saveMany([
+            new HouseSpesification($arrayData),
+            new HouseSpesification($arrayData),
+        ]); //multiple
+
+        // HouseSpecs
+        // ResidentSpecs
+        // HouseImages
+        */
 
         return $house;
     }

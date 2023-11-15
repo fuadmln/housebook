@@ -6,9 +6,11 @@ use App\Models\City;
 use App\Models\User;
 use App\Enums\PropertyType;
 use App\Models\Subdistrict;
+use App\Models\HouseSpesification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use App\Models\Utilities\QueryHelper;
@@ -73,7 +75,8 @@ class House extends Model
         return $this->belongsTo(Subdistrict::class);
     }
 
-    
-
-
+    public function houseSpesifications(): HasMany
+    {
+        return $this->hasMany(HouseSpesification::class);
+    }
 }
