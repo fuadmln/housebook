@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/subdistrict', V1\SubdistrictController::class)->only([
         'index', 'show', 'store'
     ]);
+
+    Route::apiResource('/houses', V1\HouseController::class);
 });
 
 // PUBLIC USER
