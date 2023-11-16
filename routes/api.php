@@ -41,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/residencespesifications', V1\ResidenceSpesificationController::class);
 
     Route::apiResource('/schedules', V1\ScheduleController::class);
+
+    Route::apiResource('/bookings', V1\BookingController::class);
 });
 
 // PUBLIC USER
