@@ -29,8 +29,9 @@ class HouseController extends Controller
      */
     public function store(StoreHouseRequest $request)
     {
-        $validatedData = $request->validated()
+        $validatedData = $request->validated();
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
+        $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
 
         try{
             DB::beginTransaction();
@@ -44,7 +45,11 @@ class HouseController extends Controller
                 $house->houseSpesifications()->createMany($houseSpesifications);
             }
 
-            // ResidentSpecs
+            if($hasResidenceSpesifications){
+                $residenceSpesifications = $request->validated()['residence_specifications'];
+                $house->residenceSpesifications()->createMany($residenceSpesifications);
+            }
+
             // HouseImages
 
             DB::commit();
