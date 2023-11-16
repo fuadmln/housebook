@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\City;
 use App\Models\User;
+use App\Models\HouseImage;
 use App\Enums\PropertyType;
 use App\Models\Subdistrict;
 use App\Models\HouseSpesification;
@@ -83,5 +84,10 @@ class House extends Model
     public function residenceSpesifications(): HasMany
     {
         return $this->hasMany(ResidenceSpesification::class);
+    }
+
+    public function houseImages(): HasMany
+    {
+        return $this->hasMany(HouseImage::class);
     }
 }

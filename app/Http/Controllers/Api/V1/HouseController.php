@@ -32,6 +32,7 @@ class HouseController extends Controller
         $validatedData = $request->validated();
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
         $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
+        $hasHouseImages = isset($request->validated()['house_images']);
 
         try{
             DB::beginTransaction();
@@ -50,7 +51,22 @@ class HouseController extends Controller
                 $house->residenceSpesifications()->createMany($residenceSpesifications);
             }
 
-            // HouseImages
+            if($hasHouseImages){
+                $houseImages = $request->validated(['house_images']);
+    
+                foreach ($houseImages as $houseImage) {
+                    $imageNameToSave = 'house-' . date('Y-m-d-h-i-s-U') . '.' . $houseImage['image']->extension();
+                    $imageData['file_path'] = 'img/properties/' . $imageNameToSave;
+                    $imageData['sequence'] =  $houseImage['sequence'];
+                    // $imageData['url'] = ;
+                    $imageData['url'] = 'url/' . $imageNameToSave; //dummy
+    
+                    //TODO: upload image
+    
+                    $house->houseImages()->create($imageData);
+                }
+                
+            }
 
             DB::commit();
 
