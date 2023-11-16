@@ -29,18 +29,9 @@ class HouseResource extends JsonResource
             'floor' => $this->floor,
             'headline' => $this->headline,
             'iframe' => $this->iframe,
-            'province' => [
-                'id' => $this->province->id,
-                'name' => $this->province->name,
-            ],
-            'city' => [
-                'id' => $this->city->id,
-                'name' => $this->city->name,
-            ],
-            'subdistrict' => [
-                'id' => $this->subdistrict->id,
-                'name' => $this->subdistrict->name,
-            ],
+            'province_id' => $this->province_id,
+            'city_id' => $this->city_id,
+            'subdistrict_id' => $this->subdistrict_id,
             'house_spesification' => $this->houseSpesifications,
             'residence_spesification' => $this->residenceSpesifications,
         ];

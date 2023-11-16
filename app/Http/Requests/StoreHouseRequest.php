@@ -40,10 +40,13 @@ class StoreHouseRequest extends FormRequest
             'headline' => 'required|string',
             'iframe' => 'sometimes|nullable|',
 
+            'house_specifications' => 'sometimes|array',
+            'house_specifications.*.name' => 'required_if:house_specifications, array|required|string',
+            'house_specifications.*.value' => 'required_if:house_specifications, array|required|string',
+
             /*
-            house_image[s]
-            house_spec[s]
             residence_spec[s]
+            house_image[s]
             */
 
         ];

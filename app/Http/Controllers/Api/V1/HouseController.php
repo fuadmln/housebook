@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\House;
 use App\Models\HouseSpesification;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
 use App\Http\Requests\StoreHouseRequest;
@@ -28,29 +29,38 @@ class HouseController extends Controller
      */
     public function store(StoreHouseRequest $request)
     {
-        $house = new House($request->validated());
-        $house->user_id = $request->user()->id;
-        $house->save(); //try cactch
+        $validatedData = $request->validated()
+        $hasHouseSpesifications = isset($request->validated()['house_specifications']);
+
+        try{
+            DB::beginTransaction();
+
+            $house = new House($validatedData);
+            $house->user_id = $request->user()->id;
+            $house->save();
+
+            if($hasHouseSpesifications){
+                $houseSpesifications = $request->validated()['house_specifications'];
+                $house->houseSpesifications()->createMany($houseSpesifications);
+            }
+
+            // ResidentSpecs
+            // HouseImages
+
+            DB::commit();
+
+            return response()->json([
+                'data' => $house
+            ], 201);
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
         
-        return $house;//
-
-        /* storing children
-        // check if request has model data
-        $house->houseSpesifications()->save(new HouseSpesification([
-            'name' => 'tipe',
-            'value' => '36',
-        ])); //single
-        $house->houseSpesifications->saveMany([
-            new HouseSpesification($arrayData),
-            new HouseSpesification($arrayData),
-        ]); //multiple
-
-        // HouseSpecs
-        // ResidentSpecs
-        // HouseImages
-        */
-
-        return $house;
     }
 
     /**
