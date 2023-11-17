@@ -38,7 +38,7 @@ class StoreHouseRequest extends FormRequest
             'bathroom' => 'required|integer',
             'floor' => 'required|integer',
             'headline' => 'required|string',
-            'iframe' => 'sometimes|nullable|',
+            'iframe' => 'sometimes|nullable|string',
 
             'house_specifications' => 'sometimes|array',
             'house_specifications.*.name' => 'required_if:house_specifications, array|required|string',

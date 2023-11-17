@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\House;
 use App\Models\HouseSpesification;
+use App\Models\ResidenceSpesification;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
@@ -80,8 +81,6 @@ class HouseController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
-
-        
     }
 
     /**
@@ -97,7 +96,54 @@ class HouseController extends Controller
      */
     public function update(UpdateHouseRequest $request, House $house)
     {
-        //
+        $hasHouseSpesifications = isset($request->validated()['house_specifications']);
+        $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
+
+        try{
+            DB::beginTransaction();
+        
+            $house->update($request->validated());
+
+            if($hasHouseSpesifications){
+                //kalau bisa jgn pake foreach
+                foreach ($request->validated()['house_specifications'] as $houseSpesification) {
+                    if( $houseSpesification['action'] == 'update' ){
+                        $house->houseSpesifications
+                            ->find($houseSpesification['id'])
+                            ->update($houseSpesification);
+                    } elseif ( $houseSpesification['action'] == 'delete' ) {
+                        HouseSpesification::destroy($houseSpesification['id']);
+                    }
+                }
+            }
+
+            if($hasResidenceSpesifications){
+                foreach ($request->validated()['residence_specifications'] as $residenceSpesification) {
+                    if( $residenceSpesification['action'] == 'update' ){
+                        $house->residenceSpesifications
+                            ->find($residenceSpesification['id'])
+                            ->update($residenceSpesification);
+                    } elseif ( $residenceSpesification['action'] == 'delete' ) {
+                        ResidenceSpesification::destroy($residenceSpesification['id']);
+                    }
+                }
+            }
+
+            DB::commit();
+            
+            return response()->json([
+                'data' => $house
+            ], 200);
+
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+
     }
 
     /**
