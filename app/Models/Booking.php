@@ -13,14 +13,12 @@ class Booking extends Model
 {
     use HasFactory;
 
-    // public static $STATUS = [
-    //     'PENDING',
-    //     'ACCEPTED',
-    //     'REJECTED',
-    //     'DONE',
-    // ];
-
-    protected $fillable = ['user_id', 'house_id', 'schedule_id', 'status'];
+    protected $fillable = [
+        'user_id',
+        'house_id',
+        'schedule_id',
+        'status'
+    ];
 
     protected $attributes = [
         'status' => BookingStatus::PENDING,
