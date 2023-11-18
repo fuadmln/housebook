@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         'index', 'show', 'store'
     ]);
 
-    Route::apiResource('/city', V1\CityController::class)->only([
+    Route::apiResource('/cities', V1\CityController::class)->only([
         'index', 'show', 'store'
     ]);
 
