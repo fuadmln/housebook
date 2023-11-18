@@ -21,6 +21,7 @@ class HouseResource extends JsonResource
             'address' => $this->address,
             'description' => $this->description,
             'type' => $this->type,
+            'type_name' => $this->type_name,
             'building_area' => $this->building_area,
             'land_length' => $this->land_length,
             'land_width' => $this->land_width,

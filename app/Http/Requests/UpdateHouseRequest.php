@@ -29,8 +29,11 @@ class UpdateHouseRequest extends FormRequest
             'price' => 'sometimes|required|numeric',
             'address' => 'sometimes|required|string',
             'description' => 'sometimes|sometimes|nullable|string',
-            'type' => 'sometimes|required|integer|max_digits:1',
-            // 'type' => [Rule::enum(PropertyType::class)],
+            'type' => [
+                'sometimes',
+                'required',
+                Rule::enum(PropertyType::class),
+            ],
             'building_area' => 'sometimes|required|numeric',
             'land_length' => 'sometimes|required|numeric',
             'land_width' => 'sometimes|required|numeric',

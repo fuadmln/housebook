@@ -20,8 +20,6 @@ class House extends Model
 {
     use HasFactory, SoftDeletes; //QueryHelper, 
 
-    public static $TYPE = ['NEW', 'SECOND']; //ganti ke enum
-
     protected $fillable = [
         'user_id',
         'province_id',
@@ -53,14 +51,11 @@ class House extends Model
         'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];
 
-    // protected function getTypeNameAttribute(): Attribute
-    protected function getTypeNameAttribute()
+    protected function typeName(): Attribute
     {
-        return House::$TYPE[0];
-        // return $this->TYPE[$this->type];
-        // return new Attribute(
-        //     get: fn () => PropertyType::getString($this->type)
-        // );
+        return new Attribute(
+            get: fn () => PropertyType::getString($this->type)
+        );
     }
 
     public function user(): BelongsTo
