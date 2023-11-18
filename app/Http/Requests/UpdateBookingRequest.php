@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Booking;
+use App\Enums\BookingStatus;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,7 +29,7 @@ class UpdateBookingRequest extends FormRequest
             'schedule_id' => 'sometimes|required|exists:schedules,id', //tambah pengecekan apakah pernah ada house di schedule ini
             'status' => [
                 'sometimes',
-                Rule::in(Booking::$STATUS), //ubah ke enum class
+                Rule::enum(BookingStatus::class),
             ],
         ];
     }

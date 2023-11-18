@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Booking;
+use App\Models\Schedule;
+use App\Enums\BookingStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -25,6 +27,14 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
+        $scheduleWasBooked = Schedule::find($request->validated()['schedule_id'])->is_booked;
+
+        if( $scheduleWasBooked ){
+            return response()->json([
+                'message' => 'Schedule not available, already booked'
+            ], 422);
+        }
+
         $booking = new Booking($request->validated());
         $booking->user_id = $request->user()->id;
         $booking->save();
@@ -46,9 +56,10 @@ class BookingController extends Controller
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $scheduleWasBooked = $booking->schedule->is_booked;
-        if( $scheduleWasBooked && $request->validated()['status'] == 'ACCEPTED') {
+
+        if( $scheduleWasBooked && $request->validated()['status'] == BookingStatus::ACCEPTED->value) {
             return response()->json([
-                'message' => 'Schedule not available'
+                'message' => 'Schedule not available, already booked'
             ], 422);
         }
 
@@ -65,7 +76,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'data' => $booking->load('schedule')
-            ], 201);
+            ], 200);
         } catch (\Exception $e){
             DB::rollback();
 

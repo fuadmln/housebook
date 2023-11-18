@@ -20,6 +20,7 @@ class BookingResource extends JsonResource
             'house_id' => $this->house_id,
             'schedule' => $this->schedule,
             'status' => $this->status,
+            'status_name' => $this->status_name,
         ];
     }
 }
