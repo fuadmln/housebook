@@ -57,7 +57,7 @@ class BookingController extends Controller
     {
         $scheduleWasBooked = $booking->schedule->is_booked;
 
-        if( $scheduleWasBooked && $request->validated()['status'] == BookingStatus::ACCEPTED->value) {
+        if( $scheduleWasBooked && $request->validated()['status'] == BookingStatus::APPROVED->value) {
             return response()->json([
                 'message' => 'Schedule not available, already booked'
             ], 422);
@@ -68,7 +68,7 @@ class BookingController extends Controller
 
             $booking->update($request->validated());
 
-            if($booking->status == 'ACCEPTED'){
+            if($booking->status == BookingStatus::APPROVED->value){
                 $booking->schedule->update(['is_booked' => true]);
             }
 

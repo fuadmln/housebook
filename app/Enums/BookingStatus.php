@@ -5,7 +5,7 @@ namespace App\Enums;
 enum BookingStatus: int
 {
     case PENDING = 0;
-    case ACCEPTED = 1;
+    case APPROVED = 1;
     case REJECTED = 2;
     case DONE = 3;
 
@@ -13,7 +13,7 @@ enum BookingStatus: int
     {
         return match ($val) {
             self::PENDING => 'pending',
-            self::ACCEPTED => 'accepted',
+            self::APPROVED => 'approved',
             self::REJECTED => 'rejected',
             self::DONE => 'done',
         };
