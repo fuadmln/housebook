@@ -11,12 +11,14 @@ use App\Http\Requests\UpdateSubdistrictRequest;
 
 class SubdistrictController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // $subdistrics = Subdistrict::with('city.province')->get();
-        // TODO: filter by parent case
-        $subdistrics = Subdistrict::all();
+        $city_id = $request->query('city_id');
 
+        if ($city_id) 
+            $subdistrics = Subdistrict::where('city_id', $city_id)->get();
+        else $subdistrics = Subdistrict::all();
+        
         return response()->json(['data' => $subdistrics]);
     }
 

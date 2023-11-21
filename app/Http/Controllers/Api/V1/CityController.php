@@ -11,11 +11,13 @@ use App\Http\Requests\UpdateCityRequest;
 
 class CityController extends Controller
 {
-    public function index()
-    {
-        // $cities = City::with('province')->get();
-        // TODO: filter by parent case
-        $cities = City::all();
+    public function index(Request $request)
+    {   
+        $province_id = $request->query('province_id');
+
+        if ($province_id)
+            $cities = City::where('province_id', $province_id)->get();
+        else $cities = City::all();
         
         return response()->json(['data' => $cities]);
     }
