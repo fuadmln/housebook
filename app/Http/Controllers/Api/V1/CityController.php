@@ -7,23 +7,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CityResource;
 use App\Http\Requests\StoreCityRequest;
+use App\Http\Requests\UpdateCityRequest;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         // $cities = City::with('province')->get();
+        // TODO: filter by parent case
         $cities = City::all();
         
         return response()->json(['data' => $cities]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCityRequest $request)
     {
         $city = City::create($request->validated());
@@ -31,27 +27,22 @@ class CityController extends Controller
         return CityResource::make($city);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Request $request, City $city)
+    public function show(City $city)
     {
         return CityResource::make($city);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateCityRequest $request, City $city)
     {
-        //
+        $city->update($request->validated());
+
+        return CityResource::make($city);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(City $city)
     {
-        //
+        $city->delete();
+        
+        return response()->noContent();
     }
 }

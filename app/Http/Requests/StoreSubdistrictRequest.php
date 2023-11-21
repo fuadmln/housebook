@@ -23,7 +23,7 @@ class StoreSubdistrictRequest extends FormRequest
     {
         return [
             'city_id' => 'required|exists:cities,id',
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255',
         ];
     }
 }

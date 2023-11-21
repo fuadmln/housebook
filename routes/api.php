@@ -23,17 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('auth/logout', [V1\AuthController::class, 'logout']);
     
-    Route::apiResource('/provinces', V1\ProvinceController::class)->only([
-        'index', 'show', 'store'
-    ]);
-
-    Route::apiResource('/cities', V1\CityController::class)->only([
-        'index', 'show', 'store'
-    ]);
-
-    Route::apiResource('/subdistrict', V1\SubdistrictController::class)->only([
-        'index', 'show', 'store'
-    ]);
+    Route::apiResource('/provinces', V1\ProvinceController::class);
+    Route::apiResource('/cities', V1\CityController::class);
+    Route::apiResource('/subdistrict', V1\SubdistrictController::class);
 
     Route::apiResource('/houses', V1\HouseController::class);
     

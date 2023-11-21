@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Province;
+use App\Models\Subdistrict; //
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProvinceResource;
 
 class ProvinceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $provinces = Province::all();
@@ -19,39 +17,32 @@ class ProvinceController extends Controller
         return ProvinceResource::collection($provinces);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate(['name' => 'required|max:255']);
+        $validated = $request->validate(['name' => 'required|string|max:255']);
 
         $province = Province::create($validated);
 
         return ProvinceResource::make($province);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Request $request, Province $province)
+    public function show(Province $province)
     {
         return ProvinceResource::make($province);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Province $province)
     {
-        //
+        $validated = $request->validate(['name' => 'sometimes|string|max:255']);
+        $province->update($validated);
+
+        return ProvinceResource::make($province);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Province $province)
     {
-        //
+        $province->delete();
+        
+        return response()->noContent();
     }
 }
