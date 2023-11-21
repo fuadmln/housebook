@@ -14,7 +14,10 @@ class ProvinceController extends Controller
     {
         $provinces = Province::all();
 
-        return ProvinceResource::collection($provinces);
+        return response()->json([
+            'count' => $provinces->count(),
+            'data' => $provinces
+        ]);
     }
 
     public function store(Request $request)

@@ -19,7 +19,10 @@ class SubdistrictController extends Controller
             $subdistrics = Subdistrict::where('city_id', $city_id)->get();
         else $subdistrics = Subdistrict::all();
         
-        return response()->json(['data' => $subdistrics]);
+        return response()->json([
+            'count' => $subdistrics->count(),
+            'data' => $subdistrics
+        ]);
     }
 
     public function store(StoreSubdistrictRequest $request)

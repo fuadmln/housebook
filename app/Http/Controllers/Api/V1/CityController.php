@@ -19,7 +19,10 @@ class CityController extends Controller
             $cities = City::where('province_id', $province_id)->get();
         else $cities = City::all();
         
-        return response()->json(['data' => $cities]);
+        return response()->json([
+            'count' => $cities->count(),
+            'data' => $cities
+        ]);
     }
 
     public function store(StoreCityRequest $request)
