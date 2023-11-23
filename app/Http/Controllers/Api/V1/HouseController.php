@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\House;
+use App\Models\HouseAccessibility;
 use App\Models\HouseSpesification;
-use App\Models\ResidenceSpesification;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
+use App\Models\ResidenceSpesification;
 use App\Http\Requests\StoreHouseRequest;
 use App\Http\Requests\UpdateHouseRequest;
 
@@ -33,6 +34,7 @@ class HouseController extends Controller
         $validatedData = $request->validated();
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
         $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
+        $hasHouseAccessibilities = isset($request->validated()['house_accessibilities']);
         $hasHouseImages = isset($request->validated()['house_images']);
 
         try{
@@ -50,6 +52,11 @@ class HouseController extends Controller
             if($hasResidenceSpesifications){
                 $residenceSpesifications = $request->validated()['residence_specifications'];
                 $house->residenceSpesifications()->createMany($residenceSpesifications);
+            }
+
+            if($hasHouseAccessibilities){
+                $houseAccessibilities = $request->validated()['house_accessibilities'];
+                $house->houseAccessibilities()->createMany($houseAccessibilities);
             }
 
             if($hasHouseImages){
@@ -98,6 +105,7 @@ class HouseController extends Controller
     {
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
         $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
+        $hasHouseAccessibilities = isset($request->validated()['house_accessibilities']);
 
         try{
             DB::beginTransaction();
@@ -105,7 +113,6 @@ class HouseController extends Controller
             $house->update($request->validated());
 
             if($hasHouseSpesifications){
-                //kalau bisa jgn pake foreach
                 foreach ($request->validated()['house_specifications'] as $houseSpesification) {
                     if( $houseSpesification['action'] == 'update' ){
                         $house->houseSpesifications
@@ -125,6 +132,18 @@ class HouseController extends Controller
                             ->update($residenceSpesification);
                     } elseif ( $residenceSpesification['action'] == 'delete' ) {
                         ResidenceSpesification::destroy($residenceSpesification['id']);
+                    }
+                }
+            }
+
+            if($hasHouseAccessibilities){
+                foreach ($request->validated()['house_accessibilities'] as $houseAccessibility) {
+                    if( $houseAccessibility['action'] == 'update' ){
+                        $house->houseAccessibilities
+                            ->find($houseAccessibility['id'])
+                            ->update($houseAccessibility);
+                    } elseif ( $houseAccessibility['action'] == 'delete' ) {
+                        HouseAccessibility::destroy($houseAccessibility['id']);
                     }
                 }
             }

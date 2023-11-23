@@ -44,21 +44,20 @@ class StoreHouseRequest extends FormRequest
             'iframe' => 'sometimes|nullable|string',
 
             'house_specifications' => 'sometimes|array',
-            'house_specifications.*.name' => 'required_if:house_specifications, array|required|string',
-            'house_specifications.*.value' => 'required_if:house_specifications, array|required|string',
+            'house_specifications.*.name' => 'required_if:house_specifications,array|required|string',
+            'house_specifications.*.value' => 'required_if:house_specifications,array|required|string',
 
             'residence_specifications' => 'sometimes|array',
-            'residence_specifications.*.name' => 'required_if:residence_specifications, array|required|string',
-            'residence_specifications.*.value' => 'required_if:residence_specifications, array|required|string',
+            'residence_specifications.*.name' => 'required_if:residence_specifications,array|required|string',
+            'residence_specifications.*.value' => 'required_if:residence_specifications,array|required|string',
             
             'house_images' => 'sometimes|array',
-            'house_images.*.image' => 'required_if:house_images, array|required|file',
-            'house_images.*.sequence' => 'required_if:house_images, array|required|integer|distinct',
+            'house_images.*.image' => 'required_if:house_images,array|required|file',
+            'house_images.*.sequence' => 'required_if:house_images,array|required|integer|distinct',
 
-            /*
-            
-            */
-
+            'house_accessibilities' => 'sometimes|array',
+            'house_accessibilities.*.place' => 'required_if:house_accessibilities,array|required|string',
+            'house_accessibilities.*.duration' => 'required_if:house_accessibilities,array|required|string',
         ];
     }
 }

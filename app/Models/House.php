@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\HouseImage;
 use App\Enums\PropertyType;
 use App\Models\Subdistrict;
+use App\Models\HouseAccessibility;
 use App\Models\HouseSpesification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -91,5 +92,10 @@ class House extends Model
     public function houseImages(): HasMany
     {
         return $this->hasMany(HouseImage::class);
+    }
+
+    public function houseAccessibilities(): HasMany
+    {
+        return $this->hasMany(HouseAccessibility::class);
     }
 }

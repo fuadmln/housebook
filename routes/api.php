@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::apiResource('/housespesifications', V1\HouseSpesificationController::class);
     Route::apiResource('/residencespesifications', V1\ResidenceSpesificationController::class);
+    Route::apiResource('/houseaccessibilities', V1\HouseAccessibilityController::class);
 
     Route::apiResource('/schedules', V1\ScheduleController::class);
 
