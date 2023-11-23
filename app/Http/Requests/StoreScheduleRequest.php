@@ -22,9 +22,15 @@ class StoreScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date_format:Y-m-d',
-            'start_time' => 'required|date_format:H:i:s',
-            'end_time' => 'required|date_format:H:i:s',
+            'date' => 'required_without:schedules|date_format:Y-m-d',
+            'start_time' => 'required_without:schedules|date_format:H:i:s',
+            'end_time' => 'required_without:schedules|date_format:H:i:s',
+
+            'schedules' => 'required_without:date,start_time,end_time|array',
+            'schedules.*.date' => 'required_if:schedules,array|date_format:Y-m-d',
+            'schedules.*.start_time' => 'required_if:schedules,array|date_format:H:i:s',
+            'schedules.*.end_time' => 'required_if:schedules,array|date_format:H:i:s',
+
         ];
     }
 }
