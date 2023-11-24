@@ -16,7 +16,12 @@ class BookingController extends Controller
 {
     public function index()
     {
-        return Booking::with('schedule')->get();
+        $bookings = Booking::with('schedule')->get();
+
+        return response()->json([
+            'count' => $bookings->count(),
+            'data' => $bookings
+        ]);
     }
 
     public function store(StoreBookingRequest $request)

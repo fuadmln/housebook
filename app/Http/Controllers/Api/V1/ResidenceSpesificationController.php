@@ -10,7 +10,12 @@ class ResidenceSpesificationController extends Controller
 {
     public function index()
     {
-        return ResidenceSpesification::all();
+        $residenceSpesifications = ResidenceSpesification::all();
+
+        return response()->json([
+            'count' => $residenceSpesifications->count(),
+            'data' => $residenceSpesifications
+        ]);
     }
 
     public function store(Request $request)

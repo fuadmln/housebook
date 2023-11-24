@@ -10,7 +10,12 @@ class HouseSpesificationController extends Controller
 {
     public function index()
     {
-        return HouseSpesification::all();
+        $houseSpesifications = HouseSpesification::all();
+
+        return response()->json([
+            'count' => $houseSpesifications->count(),
+            'data' => $houseSpesifications
+        ]);
     }
 
     public function store(Request $request)

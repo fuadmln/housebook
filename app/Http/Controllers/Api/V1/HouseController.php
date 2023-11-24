@@ -19,6 +19,7 @@ class HouseController extends Controller
         $houses = House::all();
 
         return response()->json([
+            'count' => $houses->count(),
             'data' => $houses
         ]);
     }

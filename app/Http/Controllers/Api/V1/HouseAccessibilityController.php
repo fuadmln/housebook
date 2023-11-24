@@ -10,7 +10,12 @@ class HouseAccessibilityController extends Controller
 {
     public function index()
     {
-        return HouseAccessibility::all();
+        $houseAccessibilities =  HouseAccessibility::all();
+
+        return response()->json([
+            'count' => $houseAccessibilities->count(),
+            'data' => $houseAccessibilities
+        ]);
     }
 
     public function store(Request $request)
