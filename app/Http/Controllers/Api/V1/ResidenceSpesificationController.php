@@ -8,17 +8,11 @@ use Illuminate\Http\Request;
 
 class ResidenceSpesificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return ResidenceSpesification::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,28 +26,26 @@ class ResidenceSpesificationController extends Controller
         return $residenceSpec;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ResidenceSpesification $residenceSpec)
+    public function show(ResidenceSpesification $residencespesification)
     {
-        return $residenceSpec;
+        return $residencespesification;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ResidenceSpesification $residenceSpec)
+    public function update(Request $request, ResidenceSpesification $residencespesification)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:100',
+            'value' => 'sometimes|required|string|max:100',
+        ]);
+
+        $residencespesification->update($validated);
+
+        return $residencespesification;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ResidenceSpesification $residenceSpec)
     {
-        $residenceSpec->delete(); //try catch
+        $residenceSpec->delete();
 
         return response()->noContent();
     }

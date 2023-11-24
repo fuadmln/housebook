@@ -8,17 +8,11 @@ use App\Http\Controllers\Controller;
 
 class HouseSpesificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return HouseSpesification::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,28 +26,26 @@ class HouseSpesificationController extends Controller
         return $houseSpec;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Request $request, HouseSpesification $houseSpec)
+    public function show(Request $request, HouseSpesification $housespesification)
     {
-        return $houseSpec;
+        return $housespesification;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, HouseSpesification $housespesification)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:100',
+            'value' => 'sometimes|required|string|max:100',
+        ]);
+
+        $housespesification->update($validated);
+
+        return $housespesification;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(HouseSpesification $houseSpec)
     {
-        $houseSpec->delete(); //try catch
+        $houseSpec->delete();
 
         return response()->noContent();
     }
