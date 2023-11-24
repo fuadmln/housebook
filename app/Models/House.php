@@ -21,6 +21,10 @@ class House extends Model
 {
     use HasFactory, SoftDeletes; //QueryHelper, 
 
+    protected $attributes = [
+        'is_published' => false,
+    ];
+
     protected $fillable = [
         'user_id',
         'province_id',
@@ -38,6 +42,7 @@ class House extends Model
         'floor',
         'headline',
         'iframe',
+        'is_published',
     ];
 
     protected $hidden = ['deleted_at'];
@@ -48,6 +53,7 @@ class House extends Model
 
     protected $casts = [
         'type' => PropertyType::class,
+        'is_published' => 'boolean',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];

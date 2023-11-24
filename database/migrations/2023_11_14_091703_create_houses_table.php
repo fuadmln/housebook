@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('floor');
             $table->string('headline');
             $table->text('iframe')->nullable();
+            $table->boolean('is_published')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

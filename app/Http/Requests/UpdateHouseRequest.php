@@ -41,9 +41,9 @@ class UpdateHouseRequest extends FormRequest
             'bathroom' => 'sometimes|required|integer',
             'floor' => 'sometimes|required|integer',
             'headline' => 'sometimes|required|string',
-            'iframe' => 'sometimes|nullable|string',
+            'iframe' => 'sometimes|nullable|string', // admin only
+            'is_published' => 'sometimes|required|boolean', // admin only
 
-            //children relation
             'house_specifications' => 'sometimes|array',
             'house_specifications.*.action' => [
                 'sometimes',

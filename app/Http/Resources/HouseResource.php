@@ -30,6 +30,7 @@ class HouseResource extends JsonResource
             'floor' => $this->floor,
             'headline' => $this->headline,
             'iframe' => $this->iframe,
+            'iframe' => $this->is_published,
             'province_id' => $this->province_id,
             'city_id' => $this->city_id,
             'subdistrict_id' => $this->subdistrict_id,
