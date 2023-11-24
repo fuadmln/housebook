@@ -14,17 +14,11 @@ use App\Http\Requests\UpdateBookingRequest;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Booking::with('schedule')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBookingRequest $request)
     {
         $scheduleWasBooked = Schedule::find($request->validated()['schedule_id'])->is_booked;
@@ -42,17 +36,11 @@ class BookingController extends Controller
         return BookingResource::make($booking);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Booking $booking)
     {
         return BookingResource::make($booking);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $scheduleWasBooked = $booking->schedule->is_booked;
@@ -86,9 +74,6 @@ class BookingController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Booking $booking)
     {
         $booking->delete();

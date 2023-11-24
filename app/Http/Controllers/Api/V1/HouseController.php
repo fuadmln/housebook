@@ -14,9 +14,6 @@ use App\Http\Requests\UpdateHouseRequest;
 
 class HouseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $houses = House::all();
@@ -26,9 +23,6 @@ class HouseController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreHouseRequest $request)
     {
         $validatedData = $request->validated();
@@ -90,17 +84,11 @@ class HouseController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(House $house)
     {
         return HouseResource::make($house);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateHouseRequest $request, House $house)
     {
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
@@ -165,12 +153,9 @@ class HouseController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(House $house)
     {
-        $house->delete(); //try catch
+        $house->delete();
 
         return response()->noContent();
     }
