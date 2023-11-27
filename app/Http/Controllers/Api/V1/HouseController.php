@@ -8,15 +8,36 @@ use App\Models\HouseSpesification;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
+use App\Http\Requests\GetHouseRequest;
 use App\Models\ResidenceSpesification;
 use App\Http\Requests\StoreHouseRequest;
 use App\Http\Requests\UpdateHouseRequest;
 
 class HouseController extends Controller
 {
-    public function index()
+    public function index(GetHouseRequest $request)
     {
-        $houses = House::all();
+        $houses = House::query(); 
+        
+        $has_iframe = $request->has_iframe;
+        $is_published = $request->is_published;
+        $type = $request->type;
+
+        if( $owner_id = $request->user_id) )
+            $bookings->where('user_id', $owner_id);
+
+        if( !is_null($has_iframe) ) {
+            if($has_iframe) $houses->whereNotNull('iframe');
+            else $houses->whereNull('iframe');
+        }
+        
+        if( !is_null($is_published) )
+            $houses->where('is_published', $is_published);
+        
+        if( !is_null($type) )
+            $houses->where('type', $type);
+
+        $houses = $houses->get();
 
         return response()->json([
             'count' => $houses->count(),

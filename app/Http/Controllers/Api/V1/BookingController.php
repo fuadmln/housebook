@@ -9,14 +9,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingResource;
+use App\Http\Requests\GetBookingRequest;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(GetBookingRequest $request)
     {
-        $bookings = Booking::with('schedule')->get();
+        $bookings = Booking::with('schedule');
+
+        if( $owner_id = $request->user_id) )
+            $bookings->where('user_id', $owner_id);
+
+        $status = $request->status;
+        if( !is_null($status) )
+            $bookings->where('status', $status);
+        
+        $bookings = $bookings->get();
 
         return response()->json([
             'count' => $bookings->count(),

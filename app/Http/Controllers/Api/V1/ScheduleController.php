@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ScheduleResource;
 use App\Http\Requests\StoreScheduleRequest;
-use App\Http\Requests\SearchScheduleRequest;
+use App\Http\Requests\GetScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 
 class ScheduleController extends Controller
 {
-    public function index(SearchScheduleRequest $request)
+    public function index(GetScheduleRequest $request)
     {
         $dateFrom = $request->from;
         $dateTo = $request->to ? $request->to : $dateFrom;
