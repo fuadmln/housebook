@@ -19,7 +19,7 @@ class BookingController extends Controller
     {
         $bookings = Booking::with('schedule');
 
-        if( $owner_id = $request->user_id) )
+        if( $owner_id = $request->user_id )
             $bookings->where('user_id', $owner_id);
 
         $status = $request->status;
@@ -51,7 +51,7 @@ class BookingController extends Controller
         return BookingResource::make($booking);
     }
 
-    public function show(Booking $booking)
+    public function show(Request $request, Booking $booking)
     {
         if(!$request->user()->is_admin || !$request->user()->id === $booking->user_id) abort(403);
 
@@ -93,7 +93,7 @@ class BookingController extends Controller
         }
     }
 
-    public function destroy(Booking $booking)
+    public function destroy(Request $request, Booking $booking)
     {
         if(!$request->user()->is_admin) abort(403);
 

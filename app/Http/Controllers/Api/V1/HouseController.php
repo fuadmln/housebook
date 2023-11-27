@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\House;
+use Illuminate\Http\Request;
 use App\Models\HouseAccessibility;
 use App\Models\HouseSpesification;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class HouseController extends Controller
         $is_published = $request->is_published;
         $type = $request->type;
 
-        if( $owner_id = $request->user_id) )
+        if( $owner_id = $request->user_id )
             $bookings->where('user_id', $owner_id);
 
         if( !is_null($has_iframe) ) {
@@ -106,10 +107,10 @@ class HouseController extends Controller
         }
     }
 
-    public function show(House $house)
+    public function show(Request $request, House $house)
     {
         if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
-
+        // load user
         return HouseResource::make($house);
     }
 
@@ -175,14 +176,12 @@ class HouseController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
-
-
     }
 
-    public function destroy(House $house)
+    public function destroy(Request $request, House $house)
     {
         if(!$request->user()->is_admin) abort(403);
-
+        
         $house->delete();
 
         return response()->noContent();
