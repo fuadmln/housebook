@@ -34,6 +34,7 @@ class HouseResource extends JsonResource
             'province_id' => $this->province_id,
             'city_id' => $this->city_id,
             'subdistrict_id' => $this->subdistrict_id,
+            'user' => $this->user->only('id','name', 'email'),
             'house_spesifications' => $this->houseSpesifications,
             'residence_spesifications' => $this->residenceSpesifications,
             'house_accessibilities' => $this->houseAccessibilities,

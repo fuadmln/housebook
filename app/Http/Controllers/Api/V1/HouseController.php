@@ -110,7 +110,7 @@ class HouseController extends Controller
     public function show(Request $request, House $house)
     {
         if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
-        // load user
+        
         return HouseResource::make($house);
     }
 
