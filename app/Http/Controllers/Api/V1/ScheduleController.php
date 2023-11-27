@@ -30,6 +30,8 @@ class ScheduleController extends Controller
 
     public function store(StoreScheduleRequest $request)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         if ($request->validated('schedules')){
             $schedules = $request->validated()['schedules'];
             $date_time = now()->toDateTimeString();
@@ -56,6 +58,8 @@ class ScheduleController extends Controller
 
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         $schedule->update($request->validated());
 
         return ScheduleResource::make($schedule);
@@ -63,6 +67,8 @@ class ScheduleController extends Controller
 
     public function destroy(Schedule $schedule)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         $schedule->delete();
 
         return response()->noContent();

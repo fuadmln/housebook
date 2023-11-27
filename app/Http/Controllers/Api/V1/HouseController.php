@@ -108,11 +108,15 @@ class HouseController extends Controller
 
     public function show(House $house)
     {
+        if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
+
         return HouseResource::make($house);
     }
 
     public function update(UpdateHouseRequest $request, House $house)
     {
+        if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
+
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
         $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
         $hasHouseAccessibilities = isset($request->validated()['house_accessibilities']);
@@ -177,6 +181,8 @@ class HouseController extends Controller
 
     public function destroy(House $house)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         $house->delete();
 
         return response()->noContent();

@@ -53,11 +53,15 @@ class BookingController extends Controller
 
     public function show(Booking $booking)
     {
+        if(!$request->user()->is_admin || !$request->user()->id === $booking->user_id) abort(403);
+
         return BookingResource::make($booking);
     }
 
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         $scheduleWasBooked = $booking->schedule->is_booked;
 
         if( $scheduleWasBooked && $request->validated()['status'] == BookingStatus::APPROVED->value) {
@@ -91,6 +95,8 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking)
     {
+        if(!$request->user()->is_admin) abort(403);
+
         $booking->delete();
 
         return response()->noContent();
