@@ -16,6 +16,11 @@ use App\Http\Requests\UpdateHouseRequest;
 
 class HouseController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(House::class, 'house');
+    }
+
     public function index(GetHouseRequest $request)
     {
         $houses = House::query(); 
@@ -109,14 +114,12 @@ class HouseController extends Controller
 
     public function show(Request $request, House $house)
     {
-        if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
-        
         return HouseResource::make($house);
     }
 
     public function update(UpdateHouseRequest $request, House $house)
     {
-        if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
+        // if(!$request->user()->is_admin || !$request->user()->id === $house->user_id) abort(403);
 
         $hasHouseSpesifications = isset($request->validated()['house_specifications']);
         $hasResidenceSpesifications = isset($request->validated()['residence_specifications']);
@@ -179,9 +182,7 @@ class HouseController extends Controller
     }
 
     public function destroy(Request $request, House $house)
-    {
-        if(!$request->user()->is_admin) abort(403);
-        
+    {  
         $house->delete();
 
         return response()->noContent();
