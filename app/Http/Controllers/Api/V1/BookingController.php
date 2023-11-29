@@ -24,13 +24,16 @@ class BookingController extends Controller
     {
         $bookings = Booking::with('schedule');
 
+        if( !$request->user()->is_admin )
+            $bookings->where('user_id', $request->user()->id);
+
         if( $owner_id = $request->user_id )
             $bookings->where('user_id', $owner_id);
 
         $status = $request->status;
         if( !is_null($status) )
             $bookings->where('status', $status);
-        
+
         $bookings = $bookings->get();
 
         return response()->json([
