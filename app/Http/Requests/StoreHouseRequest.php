@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\PropertyType;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreHouseRequest extends FormRequest
@@ -52,7 +53,12 @@ class StoreHouseRequest extends FormRequest
             'residence_specifications.*.value' => 'required_if:residence_specifications,array|required|string',
             
             'house_images' => 'sometimes|array',
-            'house_images.*.image' => 'required_if:house_images,array|required|file',
+            'house_images.*.image' => [
+                'required_if:house_images,array',
+                'required',
+                File::image()
+                    ->max(2 * 1024)
+            ],
             'house_images.*.sequence' => 'required_if:house_images,array|required|integer|distinct',
 
             'house_accessibilities' => 'sometimes|array',

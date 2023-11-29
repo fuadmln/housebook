@@ -42,7 +42,7 @@ class UpdateHouseRequest extends FormRequest
             'floor' => 'sometimes|required|integer',
             'headline' => 'sometimes|required|string',
             'iframe' => 'sometimes|nullable|string', // admin only
-            'is_published' => 'sometimes|required|boolean', // admin only
+            'is_published' => 'sometimes|required|boolean', // if condition
 
             'house_specifications' => 'sometimes|array',
             'house_specifications.*.action' => [

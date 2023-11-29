@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
 use App\Http\Requests\GetHouseRequest;
 use App\Models\ResidenceSpesification;
+// use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreHouseRequest;
 use App\Http\Requests\UpdateHouseRequest;
 
@@ -82,20 +83,20 @@ class HouseController extends Controller
             }
 
             if($hasHouseImages){
-                $houseImages = $request->validated(['house_images']);
-    
-                foreach ($houseImages as $houseImage) {
+                foreach ($request->validated(['house_images']) as $houseImage) {
                     $imageNameToSave = 'house-' . date('Y-m-d-h-i-s-U') . '.' . $houseImage['image']->extension();
-                    $imageData['file_path'] = 'img/properties/' . $imageNameToSave;
+                    $folderToSave = 'public/img/properties';
+
+                    $savedPath = $houseImage['image']->storeAs(
+                        $folderToSave, $imageNameToSave, 'local'
+                    );
+                    
+                    $imageData['file_path'] = $savedPath;
+                    $imageData['url'] = $savedPath; //ganti s3 url
                     $imageData['sequence'] =  $houseImage['sequence'];
-                    // $imageData['url'] = ;
-                    $imageData['url'] = 'url/' . $imageNameToSave; //dummy
-    
-                    //TODO: upload image
-    
+
                     $house->houseImages()->create($imageData);
                 }
-                
             }
 
             DB::commit();
