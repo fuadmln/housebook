@@ -25,8 +25,7 @@ class UpdateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'house_id' => 'sometimes|required|exists:houses,id',
-            'schedule_id' => 'sometimes|required|exists:schedules,id', //tambah pengecekan apakah pernah ada house di schedule ini
+            'schedule_id' => 'sometimes|required|exists:schedules,id',
             'status' => [
                 'sometimes',
                 Rule::enum(BookingStatus::class),
