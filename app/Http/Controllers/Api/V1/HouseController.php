@@ -24,7 +24,10 @@ class HouseController extends Controller
 
     public function index(GetHouseRequest $request)
     {
-        $houses = House::query(); 
+        $houses = House::query();
+
+        if( $request->user()->is_admin )
+            $bookings->withTrashed();
         
         $has_iframe = $request->has_iframe;
         $is_published = $request->is_published;
