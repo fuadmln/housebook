@@ -41,8 +41,13 @@ class UpdateHouseRequest extends FormRequest
             'bathroom' => 'sometimes|required|integer',
             'floor' => 'sometimes|required|integer',
             'headline' => 'sometimes|required|string',
-            'iframe' => 'sometimes|nullable|string', // admin only
-            'is_published' => 'sometimes|required|boolean', // if condition
+            'iframe' => [
+                'sometimes',
+                'nullable',
+                Rule::excludeIf(!$this->user()->is_admin),
+                'string'
+            ],
+            'is_published' => 'sometimes|required|boolean', // ?if condition
 
             'house_specifications' => 'sometimes|array',
             'house_specifications.*.action' => [

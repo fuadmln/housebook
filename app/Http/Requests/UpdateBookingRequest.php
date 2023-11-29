@@ -30,6 +30,7 @@ class UpdateBookingRequest extends FormRequest
             'status' => [
                 'sometimes',
                 Rule::enum(BookingStatus::class),
+                Rule::excludeIf(!$this->user()->is_admin),
             ],
         ];
     }
