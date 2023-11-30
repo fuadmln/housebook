@@ -88,7 +88,7 @@ class HouseController extends Controller
             if($hasHouseImages){
                 foreach ($request->validated(['house_images']) as $houseImage) {
                     $imageNameToSave = 'house-' . date('Y-m-d-h-i-s-U') . '.' . $houseImage['image']->extension();
-                    $folderToSave = 'public/img/properties';
+                    $folderToSave = '/img/properties';
 
                     $savedPath = $houseImage['image']->storeAs(
                         $folderToSave, $imageNameToSave, 'local'
