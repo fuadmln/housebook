@@ -24,14 +24,14 @@ class BookingController extends Controller
     {
         $bookings = Booking::with('schedule');
 
-        if( !$request->user()->is_admin )
+        if (!$request->user()->is_admin)
             $bookings->where('user_id', $request->user()->id);
 
-        if( $owner_id = $request->user_id )
+        if ($owner_id = $request->user_id)
             $bookings->where('user_id', $owner_id);
 
         $status = $request->status;
-        if( !is_null($status) )
+        if (!is_null($status))
             $bookings->where('status', $status);
 
         $bookings = $bookings->get();
@@ -46,7 +46,7 @@ class BookingController extends Controller
     {
         $scheduleWasBooked = Schedule::find($request->validated()['schedule_id'])->is_booked;
 
-        if( $scheduleWasBooked ){
+        if ($scheduleWasBooked) {
             return response()->json([
                 'message' => 'Schedule not available, already booked'
             ], 422);
@@ -55,6 +55,10 @@ class BookingController extends Controller
         $booking = new Booking($request->validated());
         $booking->user_id = $request->user()->id;
         $booking->save();
+
+        if ($booking->status == BookingStatus::APPROVED) {
+            $booking->schedule->update(['is_booked' => true]);
+        }
 
         return BookingResource::make($booking);
     }
@@ -68,18 +72,18 @@ class BookingController extends Controller
     {
         $scheduleWasBooked = $booking->schedule->is_booked;
 
-        if( $scheduleWasBooked && $request->validated()['status'] == BookingStatus::APPROVED->value) {
+        if ($scheduleWasBooked && $request->validated()['status'] == BookingStatus::APPROVED->value) {
             return response()->json([
                 'message' => 'Schedule not available, already booked'
             ], 422);
         }
 
-        try{
+        try {
             DB::beginTransaction();
 
             $booking->update($request->validated());
 
-            if($booking->status == BookingStatus::APPROVED->value){
+            if ($booking->status == BookingStatus::APPROVED) {
                 $booking->schedule->update(['is_booked' => true]);
             }
 
@@ -88,7 +92,7 @@ class BookingController extends Controller
             return response()->json([
                 'data' => $booking->load('schedule')
             ], 200);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
 
             return response()->json([
